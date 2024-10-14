@@ -1,0 +1,134 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="shadow p-5 mt-5">
+        <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+          <h4 class="display-6 text-center py-2">Admin Database</h4>
+
+          <!-- Username -->
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input id="username" required #username="ngModel" [(ngModel)]="adminToUpdate.username" name="username" type="text" class="form-control" placeholder="Enter your username">
+            <div *ngIf="username.invalid && username.touched" class="text-danger">
+              <small *ngIf="username.errors?.['required']">Username is required</small>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" required #password="ngModel" [(ngModel)]="adminToUpdate.password" name="password" type="password" class="form-control" placeholder="Enter your password">
+            <div *ngIf="password.invalid && password.touched" class="text-danger">
+              <small *ngIf="password.errors?.['required']">Password is required</small>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" required #email="ngModel" [(ngModel)]="adminToUpdate.email" name="email" type="email" class="form-control" placeholder="Enter your email">
+            <div *ngIf="email.invalid && email.touched" class="text-danger">
+              <small *ngIf="email.errors?.['required']">Email is required</small>
+            </div>
+          </div>
+
+          <!-- Login Attempts -->
+          <div class="mb-3">
+            <label for="loginAttempts" class="form-label">Login Attempts</label>
+            <input id="loginAttempts" required #loginAttempts="ngModel" [(ngModel)]="adminToUpdate.loginAttempts" name="loginAttempts" type="number" class="form-control" placeholder="Enter number of login attempts">
+            <div *ngIf="loginAttempts.invalid && loginAttempts.touched" class="text-danger">
+              <small *ngIf="loginAttempts.errors?.['required']">Login attempts are required</small>
+            </div>
+          </div>
+
+          <!-- Is Active -->
+          <div class="form-check mb-3">
+            <input id="isActive" type="checkbox" [(ngModel)]="adminToUpdate.isActive" name="isActive" class="form-check-input">
+            <label class="form-check-label" for="isActive">Is Active</label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center">
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Table -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Admin ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Login Attempts</th>
+            <th>Is Active</th>
+            <th>Last Login Time</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let admin of adminDetails">
+            <td>{{ admin.id }}</td>
+            <td>{{ admin.username }}</td>
+            <td>{{ admin.email }}</td>
+            <td>{{ admin.loginAttempts }}</td>
+            <td>{{ admin.isActive ? 'Active' : 'Inactive' }}</td>
+            <td>{{ admin.lastLoginTime | date: 'short' }}</td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" (click)="edit(admin)">Edit</button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger" (click)="deleteAdmin(admin)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Edit Admin Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Update Admin</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #updateForm="ngForm" (ngSubmit)="updateAdmin()">
+            <!-- Same Fields as Above for Edit -->
+            <div class="mb-3">
+              <label for="editUsername" class="form-label">Username</label>
+              <input id="editUsername" required [(ngModel)]="adminToUpdate.username" name="username" type="text" class="form-control" placeholder="Enter username">
+            </div>
+
+            <div class="mb-3">
+              <label for="editEmail" class="form-label">Email</label>
+              <input id="editEmail" required [(ngModel)]="adminToUpdate.email" name="email" type="email" class="form-control" placeholder="Enter email">
+            </div>
+
+            <div class="mb-3">
+              <label for="editLoginAttempts" class="form-label">Login Attempts</label>
+              <input id="editLoginAttempts" required [(ngModel)]="adminToUpdate.loginAttempts" name="loginAttempts" type="number" class="form-control" placeholder="Enter login attempts">
+            </div>
+
+            <div class="form-check mb-3">
+              <input id="editIsActive" type="checkbox" [(ngModel)]="adminToUpdate.isActive" name="isActive" class="form-check-input">
+              <label class="form-check-label" for="editIsActive">Is Active</label>
+            </div>
+
+            <div class="text-center">
+              <button class="btn btn-primary" type="submit">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
